@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Godoc previewer</title>
+    <style>
+        html, body, .splitContainer {
+            height: 100%;
+        }
+
+        .split {
+            float: left;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        .split, .gutter.gutter-horizontal {
+            height: 100%;
+            float: left;
+        }
+
+        .gutter {
+            background: #eee no-repeat 50%;
+        }
+
+        .gutter.gutter-horizontal {
+            cursor: ew-resize;
+            background-image:  url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==')
+        }
+    </style>
+    <script src="https://unpkg.com/split.js/split.min.js"></script>
+    <script src="ext/wasm_exec.js"></script>
+    <script>
+        window.doneTyping = () => {
+            // trigger event on preview pane which wasm has an event handler for
+            document.getElementById("preview").dispatchEvent(new Event('updatePreview'));
+            console.log("sent even")
+        };
+
+        window.onload = async function() {
+            Split(['#codeInput', '#preview'], {
+                direction: 'horizontal'
+            });
+
+            const go = new Go();
+            const response = await fetch("main.wasm");
+            const buffer = await response.arrayBuffer();
+            WebAssembly.instantiate(buffer, go.importObject).then((result) => {
+                console.log(result);
+                go.run(result.instance);
+            });
+
+            let typingTimer;                //timer identifier
+            let doneTypingInterval = 1000;  //time in ms (5 seconds)
+            let myInput = document.getElementById('codeInput');
+            //on keyup, start the countdown
+            myInput.addEventListener('keyup', () => {
+                clearTimeout(typingTimer);
+                if (myInput.value) {
+                    typingTimer = setTimeout(window.doneTyping, doneTypingInterval);
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="splitContainer">
+        <textarea class="split" id="codeInput">
+Paste a *.go file here
+        </textarea>
+        <iframe class="split" id="preview">
+            This is my preview panel
+        </iframe>
+    </div>
+</body>
+</html>
