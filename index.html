@@ -28,18 +28,60 @@
             cursor: ew-resize;
             background-image:  url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==')
         }
+
+        .code-editor {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
     </style>
     <script src="https://unpkg.com/split.js@1.5.3/split.min.js"></script>
     <script src="ext/wasm_exec.js"></script>
+    <script src="https://unpkg.com/codeflask@1.2.1/build/codeflask.min.js"></script>
+
     <script>
-        window.doneTyping = () => {
+        const triggerRender = () => {
             // trigger event on preview pane which wasm has an event handler for
-            document.getElementById("preview").dispatchEvent(new Event('updatePreview'));
-            console.log("sent even")
+            document.getElementById("previewPane").dispatchEvent(new CustomEvent('updatePreview', {detail: flask.getCode()}));
+            console.log("sent event")
         };
 
+        const defaultContent = `// Paste your go code here
+package mypackage`;
+
+        const go_syntax = {
+            comment: [{
+                pattern: /(^|[^\\])\/\*[\s\S]*?(?:\*\/|$)/,
+                lookbehind: true
+            },
+                {
+                    pattern: /(^|[^\\:])\/\/.*/,
+                    lookbehind: true,
+                    greedy: true
+                }
+            ],
+            string: {
+                pattern: /(["'`])(\\[\s\S]|(?!\1)[^\\])*\1/,
+                greedy: true
+            },
+            keyword: /\b(?:break|case|chan|const|continue|default|defer|else|fallthrough|for|func|go(?:to)?|if|import|interface|map|package|range|return|select|struct|switch|type|var)\b/,
+            boolean: /\b(?:_|iota|nil|true|false)\b/,
+            function: /[a-z0-9_]+(?=\()/i,
+            number: /(?:\b0x[a-f\d]+|(?:\b\d+\.?\d*|\B\.\d+)(?:e[-+]?\d+)?)i?/i,
+            operator: /[*\/%^!=]=?|\+[=+]?|-[=-]?|\|[=|]?|&(?:=|&|\^=?)?|>(?:>=?|=)?|<(?:<=?|=|-)?|:=|\.\.\./,
+            punctuation: /[{}[\];(),.:]/,
+            builtin: /\b(?:bool|byte|complex(?:64|128)|error|float(?:32|64)|rune|string|u?int(?:8|16|32|64)?|uintptr|append|cap|close|complex|copy|delete|imag|len|make|new|panic|print(?:ln)?|real|recover)\b/
+        }
+
+        let flask;
+
         window.onload = async function() {
-            Split(['#codeInput', '#preview'], {
+            flask = new CodeFlask(".code-editor", {
+                language:"go",
+            });
+            flask.addLanguage("go", go_syntax);
+            flask.updateCode(defaultContent);
+            Split(['#codePane', '#previewPane'], {
                 direction: 'horizontal'
             });
 
@@ -48,30 +90,28 @@
             const buffer = await response.arrayBuffer();
             WebAssembly.instantiate(buffer, go.importObject).then((result) => {
                 console.log(result);
-                go.run(result.instance);
+                return go.run(result.instance)
             });
 
+            // Mmmm hacks...
+            // TODO: find a proper way of triggering a render once callback has been registered
+            setTimeout(triggerRender, 1000);
+
             let typingTimer;                //timer identifier
-            let doneTypingInterval = 1000;  //time in ms (5 seconds)
-            let myInput = document.getElementById('codeInput');
-            //on keyup, start the countdown
-            myInput.addEventListener('keyup', () => {
+            let doneTypingInterval = 1000;  //pause length (in ms) after which preview is updated
+            flask.onUpdate(() => {
                 clearTimeout(typingTimer);
-                if (myInput.value) {
-                    typingTimer = setTimeout(window.doneTyping, doneTypingInterval);
-                }
+                typingTimer = setTimeout(triggerRender, doneTypingInterval);
             });
         }
     </script>
 </head>
 <body>
     <div class="splitContainer">
-        <textarea class="split" id="codeInput">
-Paste a *.go file here
-        </textarea>
-        <iframe class="split" id="preview">
-            This is my preview panel
-        </iframe>
+        <div class="split" id="codePane">
+            <div class="code-editor"></div>
+        </div>
+        <iframe class="split" id="previewPane"></iframe>
     </div>
 </body>
 </html>

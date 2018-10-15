@@ -3,3 +3,9 @@ main.wasm: *.go
 
 all: main.wasm
 	./update-statics.sh
+
+devserver: main.wasm
+	goexec 'http.ListenAndServe(":8080", http.FileServer(http.Dir(".")))'
+
+clean:
+	rm -rf ext main.wasm

@@ -51,9 +51,9 @@ func applyTemplate(t *template.Template, name string, data interface{}) []byte {
 var sourcePane js.Value
 var previewPane js.Value
 
-var updatePreview = js.NewCallback(func(_ []js.Value) {
+var updatePreview = js.NewCallback(func(args []js.Value) {
 	fmt.Println("updatePreview in wasm")
-	source := sourcePane.Get("value").String()
+	source := args[0].Get("detail").String()
 	fmt.Println(source)
 	previewPane.Call("setAttribute", "srcdoc", getPageForFile(source))
 })
@@ -61,7 +61,7 @@ var updatePreview = js.NewCallback(func(_ []js.Value) {
 func main() {
 	fmt.Println("hello webassembly!")
 	sourcePane = js.Global().Get("document").Call("getElementById", "codeInput")
-	previewPane = js.Global().Get("document").Call("getElementById", "preview")
+	previewPane = js.Global().Get("document").Call("getElementById", "previewPane")
 	previewPane.Call("addEventListener", "updatePreview", updatePreview)
 
 	// keep program alive to process callbacks
@@ -108,13 +108,14 @@ func getPageForFile(file string) string {
 	info.FSet = token.NewFileSet()
 	fileAST, err := parser.ParseFile(info.FSet, "input.go", file, parser.ParseComments)
 	//spew.Dump(fileAST)
-	//fmt.Println(err)
+	fmt.Println(err)
 
 	files := map[string]*ast.File{
 		"input.go": fileAST,
 	}
 
 	pkg, err := ast.NewPackage(info.FSet, files, poorMansImporter, nil)
+	fmt.Println(err)
 	//spew.Dump(pkg, err)
 	info.PDoc = doc.New(pkg, pkg.Name, 0)
 
