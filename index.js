@@ -1,8 +1,8 @@
 "use strict";
 
 window.triggerRender = () => {
-    const code = flask.getCode()
-    window.localStorage.setItem('input.go', code)
+    const code = editor.session.getValue();
+    window.localStorage.setItem('input.go', code);
     // trigger event on preview pane which wasm has an event handler for
     document.getElementById("previewPane").dispatchEvent(new CustomEvent('updatePreview', {detail: code}));
     console.log("sent event")
@@ -38,33 +38,13 @@ const go_syntax = {
     builtin: /\b(?:bool|byte|complex(?:64|128)|error|float(?:32|64)|rune|string|u?int(?:8|16|32|64)?|uintptr|append|cap|close|complex|copy|delete|imag|len|make|new|panic|print(?:ln)?|real|recover)\b/
 };
 
-let flask;
+let editor;
 
 window.onload = async function() {
-    flask = new CodeFlask(".code-editor", {
-        language: "go",
-        handleTabs: true, // tab inserts character rather than switching to next element
-    });
-
-    // <monkey patches> to fix flask behaviour
-    // fix tab inserting actual tab character
-    flask.handleTabs = function(e) {
-        if (e.keyCode === 9) {
-            e.preventDefault();
-            const selectionStart = this.elTextarea.selectionStart;
-            const selectionEnd = this.elTextarea.selectionEnd;
-            const newCode = `${this.code.substring(0, selectionStart)}${'\t'}${this.code.substring(selectionEnd)}`;
-
-            this.updateCode(newCode);
-            this.elTextarea.selectionEnd = selectionEnd + 1;
-        }
-    };
-    // prevent broken self closing characters
-    flask.handleSelfClosingCharacters = function(){};
-    // </monkey patches>
-
-    flask.addLanguage("go", go_syntax);
-    flask.updateCode(window.localStorage.getItem('input.go'));
+    editor = ace.edit("code-editor");
+    editor.setTheme("ace/theme/monokai");
+    editor.session.setMode("ace/mode/golang");
+    editor.session.setValue(window.localStorage.getItem('input.go'));
 
     Split(['#codePane', '#previewPane'], {
         direction: 'horizontal'
@@ -80,7 +60,7 @@ window.onload = async function() {
 
     let typingTimer;                //timer identifier
     let doneTypingInterval = 1000;  //pause length (in ms) after which preview is updated
-    flask.onUpdate(() => {
+    editor.on('change', () => {
         clearTimeout(typingTimer);
         typingTimer = setTimeout(window.triggerRender, doneTypingInterval);
     });

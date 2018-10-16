@@ -23,9 +23,8 @@ html, body, .splitContainer {
     background-image:  url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==')
 }
 
-.code-editor {
+#code-editor {
     position: relative;
     width: 100%;
     height: 100%;
-    tab-size: 4;
 }
