@@ -1,0 +1,31 @@
+html, body, .splitContainer {
+    height: 100%;
+}
+
+.split {
+    float: left;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.split, .gutter.gutter-horizontal {
+    height: 100%;
+    float: left;
+}
+
+.gutter {
+    background: #eee no-repeat 50%;
+}
+
+.gutter.gutter-horizontal {
+    cursor: ew-resize;
+    background-image:  url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==')
+}
+
+.code-editor {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    tab-size: 4;
+}
