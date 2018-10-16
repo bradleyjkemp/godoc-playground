@@ -1,7 +1,7 @@
 html, body, .splitContainer {
     height: 100%;
     margin:0;
-    font-family: 'Work Sans', sans-serif;
+    font-family: 'Tahoma', sans-serif;
 }
 
 .split {
@@ -50,7 +50,6 @@ header .logo {
     font-size: 18px;
     line-height: 25px;
     border-radius: 4px;
-    font-weight: bold;
 }
 
 .header-right {
