@@ -52,14 +52,11 @@ var sourcePane js.Value
 var previewPane js.Value
 
 var updatePreview = js.NewCallback(func(args []js.Value) {
-	fmt.Println("updatePreview in wasm")
 	source := args[0].Get("detail").String()
-	fmt.Println(source)
 	previewPane.Call("setAttribute", "srcdoc", getPageForFile(source))
 })
 
 func main() {
-	fmt.Println("hello webassembly!")
 	sourcePane = js.Global().Get("document").Call("getElementById", "codeInput")
 	previewPane = js.Global().Get("document").Call("getElementById", "previewPane")
 	previewPane.Call("addEventListener", "updatePreview", updatePreview)

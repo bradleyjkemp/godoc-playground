@@ -5,7 +5,6 @@ window.triggerRender = () => {
     window.localStorage.setItem('input.go', code);
     // trigger event on preview pane which wasm has an event handler for
     document.getElementById("previewPane").dispatchEvent(new CustomEvent('updatePreview', {detail: code}));
-    console.log("sent event")
 };
 
 // if no saved code then initialise with default
@@ -40,7 +39,7 @@ const go_syntax = {
 
 let editor;
 
-window.onload = async function() {
+window.onload = function() {
     editor = ace.edit("code-editor");
     editor.setTheme("ace/theme/monokai");
     editor.session.setMode("ace/mode/golang");
@@ -50,13 +49,6 @@ window.onload = async function() {
         direction: 'horizontal'
     });
 
-    const go = new Go();
-    const response = await fetch("main.wasm");
-    const buffer = await response.arrayBuffer();
-    WebAssembly.instantiate(buffer, go.importObject).then((result) => {
-        console.log(result);
-        return go.run(result.instance)
-    });
 
     let typingTimer;                //timer identifier
     let doneTypingInterval = 1000;  //pause length (in ms) after which preview is updated
