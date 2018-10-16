@@ -33,6 +33,7 @@
             position: relative;
             width: 100%;
             height: 100%;
+            tab-size: 4;
         }
     </style>
     <script src="https://unpkg.com/split.js@1.5.3/split.min.js"></script>
@@ -71,16 +72,36 @@ package mypackage`;
             operator: /[*\/%^!=]=?|\+[=+]?|-[=-]?|\|[=|]?|&(?:=|&|\^=?)?|>(?:>=?|=)?|<(?:<=?|=|-)?|:=|\.\.\./,
             punctuation: /[{}[\];(),.:]/,
             builtin: /\b(?:bool|byte|complex(?:64|128)|error|float(?:32|64)|rune|string|u?int(?:8|16|32|64)?|uintptr|append|cap|close|complex|copy|delete|imag|len|make|new|panic|print(?:ln)?|real|recover)\b/
-        }
+        };
 
         let flask;
 
         window.onload = async function() {
             flask = new CodeFlask(".code-editor", {
-                language:"go",
+                language: "go",
+                handleTabs: true, // tab inserts character rather than switching to next element
             });
+
+            // <monkey patches> to fix flask behaviour
+            // fix tab inserting actual tab character
+            flask.handleTabs = function(e) {
+                if (e.keyCode === 9) {
+                    e.preventDefault();
+                    const selectionStart = this.elTextarea.selectionStart;
+                    const selectionEnd = this.elTextarea.selectionEnd;
+                    const newCode = `${this.code.substring(0, selectionStart)}${'\t'}${this.code.substring(selectionEnd)}`;
+
+                    this.updateCode(newCode);
+                    this.elTextarea.selectionEnd = selectionEnd + 1;
+                }
+            };
+            // prevent broken self closing characters
+            flask.handleSelfClosingCharacters = function(){};
+            // </monkey patches>
+
             flask.addLanguage("go", go_syntax);
             flask.updateCode(defaultContent);
+
             Split(['#codePane', '#previewPane'], {
                 direction: 'horizontal'
             });
