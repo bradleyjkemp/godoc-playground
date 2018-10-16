@@ -10,5 +10,5 @@ devserver: main.wasm
 clean:
 	rm -rf ext main.wasm
 
-publish:
+publish: clean
 	./publish.sh
