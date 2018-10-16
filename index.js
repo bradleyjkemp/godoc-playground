@@ -41,7 +41,7 @@ let editor;
 
 window.onload = function() {
     editor = ace.edit("code-editor");
-    editor.setTheme("ace/theme/monokai");
+    editor.setTheme("ace/theme/chrome");
     editor.session.setMode("ace/mode/golang");
     editor.session.setValue(window.localStorage.getItem('input.go'));
 
