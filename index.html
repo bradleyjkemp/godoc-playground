@@ -3,6 +3,8 @@
 <head>
     <meta charset="utf-8">
     <title>Godoc previewer</title>
+    <link href="https://fonts.googleapis.com/css?family=Work+Sans" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/minireset.css@0.0.3/minireset.min.css">
     <link rel="stylesheet" href="index.css">
 
     <!-- Go wasm -->
@@ -12,8 +14,18 @@
     <script src="https://unpkg.com/split.js@1.5.3/split.min.js"></script>
     <script src="https://unpkg.com/ace-builds@1.4.1/src-min/ace.js"></script>
     <script src="index.js"></script>
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
 </head>
 <body>
+    <header>
+        <div class="logo">GoDoc Previewer</div>
+        <div class="header-right">
+            <div class="ghbtns">
+                <a class="github-button" href="https://github.com/bradleyjkemp/cupaloy" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star bradleyjkemp/cupaloy on GitHub">Star</a>
+                <a class="github-button" href="https://github.com/bradleyjkemp/cupaloy/issues" data-icon="octicon-issue-opened" data-size="large" data-show-count="true" aria-label="Issue bradleyjkemp/cupaloy on GitHub">Report an Issue</a>
+            </div>
+        </div>
+    </header>
     <div class="splitContainer">
         <div class="split" id="codePane">
             <div id="code-editor"></div>

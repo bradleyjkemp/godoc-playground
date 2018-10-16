@@ -1,6 +1,16 @@
 "use strict";
 
+let editor;
+
 window.triggerRender = () => {
+    if (editor === undefined) {
+        // wasm was loaded and called this method before dom was ready
+        // so schedule trigger again after a delay
+        clearTimeout(this.timeout);
+        this.timeout = setTimeout(window.triggerRender, 100);
+        return;
+    }
+
     const code = editor.session.getValue();
     window.localStorage.setItem('input.go', code);
     // trigger event on preview pane which wasm has an event handler for
@@ -13,33 +23,7 @@ if (window.localStorage.getItem('input.go') == null) {
 package mypackage`);
 }
 
-const go_syntax = {
-    comment: [{
-        pattern: /(^|[^\\])\/\*[\s\S]*?(?:\*\/|$)/,
-        lookbehind: true
-    },
-        {
-            pattern: /(^|[^\\:])\/\/.*/,
-            lookbehind: true,
-            greedy: true
-        }
-    ],
-    string: {
-        pattern: /(["'`])(\\[\s\S]|(?!\1)[^\\])*\1/,
-        greedy: true
-    },
-    keyword: /\b(?:break|case|chan|const|continue|default|defer|else|fallthrough|for|func|go(?:to)?|if|import|interface|map|package|range|return|select|struct|switch|type|var)\b/,
-    boolean: /\b(?:_|iota|nil|true|false)\b/,
-    function: /[a-z0-9_]+(?=\()/i,
-    number: /(?:\b0x[a-f\d]+|(?:\b\d+\.?\d*|\B\.\d+)(?:e[-+]?\d+)?)i?/i,
-    operator: /[*\/%^!=]=?|\+[=+]?|-[=-]?|\|[=|]?|&(?:=|&|\^=?)?|>(?:>=?|=)?|<(?:<=?|=|-)?|:=|\.\.\./,
-    punctuation: /[{}[\];(),.:]/,
-    builtin: /\b(?:bool|byte|complex(?:64|128)|error|float(?:32|64)|rune|string|u?int(?:8|16|32|64)?|uintptr|append|cap|close|complex|copy|delete|imag|len|make|new|panic|print(?:ln)?|real|recover)\b/
-};
-
-let editor;
-
-window.onload = function() {
+window.onload = async function() {
     editor = ace.edit("code-editor");
     editor.setTheme("ace/theme/chrome");
     editor.session.setMode("ace/mode/golang");

@@ -1,5 +1,7 @@
 html, body, .splitContainer {
     height: 100%;
+    margin:0;
+    font-family: 'Work Sans', sans-serif;
 }
 
 .split {
@@ -27,4 +29,38 @@ html, body, .splitContainer {
     position: relative;
     width: 100%;
     height: 100%;
+}
+
+header {
+    display:inline-block;
+    width: 100%;
+    background-color: #5DC9E2;
+    border-color: hsl(209, 51%, 88%);
+    -webkit-box-shadow: 0 3px 5px rgba(57, 63, 72, 0.3);
+    -moz-box-shadow: 0 3px 5px rgba(57, 63, 72, 0.3);
+    box-shadow: 0 3px 5px rgba(57, 63, 72, 0.3);
+}
+
+header .logo {
+    float: left;
+    color: #222;
+    text-align: center;
+    padding: 12px 12px 12px 24px;
+    text-decoration: none;
+    font-size: 18px;
+    line-height: 25px;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.header-right {
+    float: right;
+}
+
+.ghbtns {
+    padding: 10px;
+}
+
+.ghbtns span {
+    padding-left: 10px;
 }
