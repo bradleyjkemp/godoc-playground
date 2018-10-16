@@ -1,6 +1,6 @@
 "use strict";
 
-const triggerRender = () => {
+window.triggerRender = () => {
     // trigger event on preview pane which wasm has an event handler for
     document.getElementById("previewPane").dispatchEvent(new CustomEvent('updatePreview', {detail: flask.getCode()}));
     console.log("sent event")
@@ -73,14 +73,10 @@ window.onload = async function() {
         return go.run(result.instance)
     });
 
-    // Mmmm hacks...
-    // TODO: find a proper way of triggering a render once callback has been registered
-    setTimeout(triggerRender, 1000);
-
     let typingTimer;                //timer identifier
     let doneTypingInterval = 1000;  //pause length (in ms) after which preview is updated
     flask.onUpdate(() => {
         clearTimeout(typingTimer);
-        typingTimer = setTimeout(triggerRender, doneTypingInterval);
+        typingTimer = setTimeout(window.triggerRender, doneTypingInterval);
     });
-}
+};

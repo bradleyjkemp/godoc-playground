@@ -64,6 +64,9 @@ func main() {
 	previewPane = js.Global().Get("document").Call("getElementById", "previewPane")
 	previewPane.Call("addEventListener", "updatePreview", updatePreview)
 
+	// Now that handler is registered, trigger a render to display initial content
+	js.Global().Call("triggerRender")
+
 	// keep program alive to process callbacks
 	<-make(chan struct{})
 }
