@@ -1,13 +1,18 @@
 "use strict";
 
 window.triggerRender = () => {
+    const code = flask.getCode()
+    window.localStorage.setItem('input.go', code)
     // trigger event on preview pane which wasm has an event handler for
-    document.getElementById("previewPane").dispatchEvent(new CustomEvent('updatePreview', {detail: flask.getCode()}));
+    document.getElementById("previewPane").dispatchEvent(new CustomEvent('updatePreview', {detail: code}));
     console.log("sent event")
 };
 
-const defaultContent = `// Paste your go code here
-package mypackage`;
+// if no saved code then initialise with default
+if (window.localStorage.getItem('input.go') == null) {
+    window.localStorage.setItem('input.go', `// Paste your go code here
+package mypackage`);
+}
 
 const go_syntax = {
     comment: [{
@@ -59,7 +64,7 @@ window.onload = async function() {
     // </monkey patches>
 
     flask.addLanguage("go", go_syntax);
-    flask.updateCode(defaultContent);
+    flask.updateCode(window.localStorage.getItem('input.go'));
 
     Split(['#codePane', '#previewPane'], {
         direction: 'horizontal'
