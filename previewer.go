@@ -4,17 +4,13 @@ import (
 	"bytes"
 	"fmt"
 	"go/ast"
-	"go/build"
 	"go/doc"
 	"go/parser"
 	"go/token"
 	"golang.org/x/tools/godoc"
 	"golang.org/x/tools/godoc/static"
-	"io"
-	"io/ioutil"
 	"log"
 	"net/http/httptest"
-	"os"
 	"strings"
 	"text/template"
 )
@@ -26,6 +22,7 @@ import (
 // import. It never returns an error.
 //
 func poorMansImporter(imports map[string]*ast.Object, path string) (*ast.Object, error) {
+	fmt.Println(imports, path)
 	pkg := imports[path]
 	if pkg == nil {
 		// note that strings.LastIndex returns -1 if there is no "/"
@@ -45,55 +42,76 @@ func applyTemplate(t *template.Template, name string, data interface{}) []byte {
 	return buf.Bytes()
 }
 
-func getPageForFile(file string) string {
-	info := &godoc.PageInfo{Dirname: "/", Mode: godoc.NoFiltering}
-	ctxt := build.Default
-	ctxt.IsAbsPath = func(path string) bool {
-		fmt.Println("IsAbsPath", path)
-		return false
-	}
-	ctxt.IsDir = func(path string) bool {
-		fmt.Println("IsDir", path)
-		if path == "/" {
-			return true
-		}
-		return false
-	}
-	ctxt.ReadDir = func(dir string) ([]os.FileInfo, error) {
-		fmt.Println("ReadDir", dir)
-		if dir == "/" {
-			return []os.FileInfo{FakeFile("input.go")}, nil
-		}
-		return nil, nil
-	}
-	ctxt.HasSubdir = func(root, dir string) (rel string, ok bool) {
-		return "", false
-	}
-	ctxt.OpenFile = func(name string) (io.ReadCloser, error) {
-		fmt.Println("OpenFile", name)
-		if name == "/input.go" {
-			b := bytes.NewBufferString(file)
-			return ioutil.NopCloser(b), nil
-		}
-		return nil, nil
+// get any function receivers which are of undeclared type
+// these stop the function appearing in the preview
+// unless we fake them
+func getUnresolvedReceiverTypes(fileDecls []ast.Decl, unresolved []*ast.Ident) []string {
+	unresolvedIdents := map[string]bool{}
+	for _, ident := range unresolved {
+		unresolvedIdents[ident.Name] = true
 	}
 
-	//pkgInfo, err := ctxt.ImportDir("/", 0)
-	//spew.Dump(pkgInfo)
-	//fmt.Println(err)
+	var unresolvedReceiverTypes []string
+	for _, decl := range fileDecls {
+		funcNode, ok := decl.(*ast.FuncDecl)
+		if ok && funcNode.Recv != nil {
+			for _, recv := range funcNode.Recv.List {
+				var name string
+				recvType := recv.Type
+				switch recvType.(type) {
+				case *ast.StarExpr:
+					name = recvType.(*ast.StarExpr).X.(*ast.Ident).Name
+				case *ast.Ident:
+					name = recvType.(*ast.Ident).Name
+				}
+
+				if unresolvedIdents[name] {
+					unresolvedReceiverTypes = append(unresolvedReceiverTypes, name)
+				}
+			}
+		}
+	}
+
+	return unresolvedReceiverTypes
+}
+
+func generateFakeTypesFile(unresolved []string, packageName string) string {
+	file := &bytes.Buffer{}
+	file.WriteString(fmt.Sprintf("package %s\n\n", packageName))
+	for _, ident := range unresolved {
+		file.WriteString("// Undeclared type, presumably this is declared in another file\n")
+		file.WriteString(fmt.Sprintf("type %s = undeclaredType\n", ident))
+	}
+	return file.String()
+}
+
+func getPageForFile(fileContents string) string {
+	info := &godoc.PageInfo{Dirname: "/", Mode: godoc.NoFiltering}
 
 	info.FSet = token.NewFileSet()
-	fileAST, err := parser.ParseFile(info.FSet, "input.go", file, parser.ParseComments)
-	//spew.Dump(fileAST)
+	parsedFile, err := parser.ParseFile(info.FSet, "input.go", fileContents, parser.ParseComments)
+	//spew.Dump(parsedFile)
 	fmt.Println(err)
 
+	packageName := parsedFile.Name.Name
+
+	fakeTypes, err := parser.ParseFile(
+		info.FSet,
+		"types.go",
+		generateFakeTypesFile(
+			getUnresolvedReceiverTypes(parsedFile.Decls, parsedFile.Unresolved),
+			packageName),
+		parser.ParseComments)
+
 	files := map[string]*ast.File{
-		"input.go": fileAST,
+		"input.go": parsedFile,
+		"types.go": fakeTypes,
 	}
 
 	pkg, err := ast.NewPackage(info.FSet, files, poorMansImporter, nil)
-	fmt.Println(err)
-	//spew.Dump(pkg, err)
+
+	fmt.Println("ast.NewPackage err:", err)
+
 	info.PDoc = doc.New(pkg, pkg.Name, 0)
 
 	presentation := godoc.NewPresentation(&godoc.Corpus{})
