@@ -9,9 +9,20 @@ import (
 var sourcePane js.Value
 var previewPane js.Value
 
+type ToastifyOptions struct {
+	text     string
+	duration int
+}
+
 var updatePreview = js.NewCallback(func(args []js.Value) {
 	source := args[0].Get("detail").String()
-	previewPane.Call("setAttribute", "srcdoc", getPageForFile(source))
+	page, err := getPageForFile(source)
+	if err != nil {
+		js.Global().Call("showErrorToast", err.Error())
+		return
+	}
+
+	previewPane.Call("setAttribute", "srcdoc", page)
 })
 
 func main() {

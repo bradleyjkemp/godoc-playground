@@ -1,4 +1,4 @@
-/* global CustomEvent, ace, Split */
+/* global CustomEvent, ace, Split, Toastify */
 'use strict'
 
 let editor
@@ -16,6 +16,15 @@ window.triggerRender = () => {
   window.localStorage.setItem('input.go', code)
   // trigger event on preview pane which wasm has an event handler for
   document.getElementById('previewPane').dispatchEvent(new CustomEvent('updatePreview', { detail: code }))
+}
+
+window.showErrorToast = (errorMessage) => {
+  Toastify({
+    text: errorMessage,
+    gravity: "bottom",
+    backgroundColor: "orangered",
+    duration: 3000,
+  }).showToast();
 }
 
 // if no saved code then initialise with default

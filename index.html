@@ -12,25 +12,29 @@
     <script defer src="https://unpkg.com/ace-builds@1.4.1/src-min/ace.js"></script>
     <script defer src="index.js"></script>
     <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <script async type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
     <link rel="stylesheet" href="https://unpkg.com/minireset.css@0.0.3/minireset.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link rel="stylesheet" href="index.css">
 </head>
 <body>
-    <header>
-        <div class="logo">GoDoc Previewer</div>
-        <div class="header-right">
-            <div class="ghbtns">
-                <a class="github-button" href="https://github.com/bradleyjkemp/cupaloy" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star bradleyjkemp/cupaloy on GitHub">Star</a>
-                <a class="github-button" href="https://github.com/bradleyjkemp/cupaloy/issues" data-icon="octicon-issue-opened" data-size="large" data-show-count="true" aria-label="Issue bradleyjkemp/cupaloy on GitHub">Report an Issue</a>
+    <div class="fillScreen">
+        <header>
+            <div class="logo">GoDoc Previewer</div>
+            <div class="header-right">
+                <div class="ghbtns">
+                    <a class="github-button" href="https://github.com/bradleyjkemp/cupaloy" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star bradleyjkemp/cupaloy on GitHub">Star</a>
+                    <a class="github-button" href="https://github.com/bradleyjkemp/cupaloy/issues" data-icon="octicon-issue-opened" data-size="large" data-show-count="true" aria-label="Issue bradleyjkemp/cupaloy on GitHub">Report an Issue</a>
+                </div>
             </div>
+        </header>
+        <div class="splitContainer">
+            <div class="split" id="codePane">
+                <div id="code-editor"></div>
+            </div>
+            <iframe class="split" id="previewPane" srcdoc="Loading GoDoc renderer. Please wait..."></iframe>
         </div>
-    </header>
-    <div class="splitContainer">
-        <div class="split" id="codePane">
-            <div id="code-editor"></div>
-        </div>
-        <iframe class="split" id="previewPane" srcdoc="Loading GoDoc renderer. Please wait..."></iframe>
     </div>
 </body>
 </html>

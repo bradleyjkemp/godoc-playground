@@ -3,14 +3,19 @@ html, body {
     width: 100%;
     margin:0;
     font-family: 'Tahoma', sans-serif;
+}
+
+.fillScreen {
+    height:100%;
+    width: 100%;
     display: table;
 }
 
-body > header {
+.fillScreen > header {
     display: table-row;
 }
 
-body > .splitContainer {
+.fillScreen > .splitContainer {
     display: table-row;
 }
 

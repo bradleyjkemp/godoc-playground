@@ -22,7 +22,6 @@ import (
 // import. It never returns an error.
 //
 func poorMansImporter(imports map[string]*ast.Object, path string) (*ast.Object, error) {
-	fmt.Println(imports, path)
 	pkg := imports[path]
 	if pkg == nil {
 		// note that strings.LastIndex returns -1 if there is no "/"
@@ -85,13 +84,15 @@ func generateFakeTypesFile(unresolved []string, packageName string) string {
 	return file.String()
 }
 
-func getPageForFile(fileContents string) string {
+func getPageForFile(fileContents string) (string, error) {
 	info := &godoc.PageInfo{Dirname: "/", Mode: godoc.NoFiltering}
 
 	info.FSet = token.NewFileSet()
 	parsedFile, err := parser.ParseFile(info.FSet, "input.go", fileContents, parser.ParseComments)
-	//spew.Dump(parsedFile)
-	fmt.Println(err)
+	if err != nil {
+		fmt.Println("ParseFile err", err)
+		return "", err
+	}
 
 	packageName := parsedFile.Name.Name
 
@@ -102,22 +103,28 @@ func getPageForFile(fileContents string) string {
 			getUnresolvedReceiverTypes(parsedFile.Decls, parsedFile.Unresolved),
 			packageName),
 		parser.ParseComments)
+	if err != nil {
+		fmt.Println("ParseFile types.go", err)
+		return "", err
+	}
 
 	files := map[string]*ast.File{
 		"input.go": parsedFile,
 		"types.go": fakeTypes,
 	}
 
-	pkg, err := ast.NewPackage(info.FSet, files, poorMansImporter, nil)
-
-	fmt.Println("ast.NewPackage err:", err)
+	pkg, _ := ast.NewPackage(info.FSet, files, poorMansImporter, nil)
+	if err != nil {
+		fmt.Println("NewPackage err", err)
+		return "", err
+	}
 
 	info.PDoc = doc.New(pkg, pkg.Name, 0)
 
 	presentation := godoc.NewPresentation(&godoc.Corpus{})
 	presentation.PackageHTML, err = template.New("package.html").Funcs(presentation.FuncMap()).Parse(string(static.Files["package.html"]))
 	if err != nil {
-		panic(err)
+		return "", err
 	}
 	presentation.GodocHTML, err = template.New("godoc.html").Funcs(presentation.FuncMap()).Parse(string(static.Files["godoc.html"]))
 
@@ -133,5 +140,5 @@ func getPageForFile(fileContents string) string {
 		//GoogleCN: info.GoogleCN,
 	})
 
-	return strings.Replace(resp.Body.String(), "/lib/godoc", "./ext", -1)
+	return strings.Replace(resp.Body.String(), "/lib/godoc", "./ext", -1), nil
 }
