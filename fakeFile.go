@@ -5,28 +5,28 @@ import (
 	"time"
 )
 
-type FakeFile string
+type fakeFile string
 
-func (f FakeFile) Name() string {
+func (f fakeFile) Name() string {
 	return string(f)
 }
 
-func (f FakeFile) Size() int64 {
+func (f fakeFile) Size() int64 {
 	return int64(len(f))
 }
 
-func (f FakeFile) Mode() os.FileMode {
+func (f fakeFile) Mode() os.FileMode {
 	return 0777
 }
 
-func (f FakeFile) ModTime() time.Time {
+func (f fakeFile) ModTime() time.Time {
 	return time.Now()
 }
 
-func (f FakeFile) IsDir() bool {
+func (f fakeFile) IsDir() bool {
 	return false
 }
 
-func (f FakeFile) Sys() interface{} {
+func (f fakeFile) Sys() interface{} {
 	return nil
 }

@@ -12,3 +12,14 @@ clean:
 
 publish: clean
 	./publish.sh
+
+lint-js: *.js
+	standard *.js
+
+lint-fix-js: *.js
+	standard --fix *.js && standard *.js
+
+lint-go: *.go
+	golint ./...
+
+lint-all: lint-go lint-js
