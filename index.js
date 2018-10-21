@@ -47,8 +47,12 @@ package mypackage`)
 }
 
 const go = new Go()
-
-const instantiateWasm = WebAssembly.instantiateStreaming(fetch('main.wasm'), go.importObject)
+const mainWasm = fetch('main.wasm')
+const instantiateWasm = WebAssembly.instantiateStreaming ?
+    WebAssembly.instantiateStreaming(mainWasm, go.importObject)
+  : mainWasm.
+  then(response => response.arrayBuffer()).
+  then(bytes => WebAssembly.instantiate(bytes, go.importObject))
 
 window.onload = async function () {
   editor = ace.edit('code-editor')
