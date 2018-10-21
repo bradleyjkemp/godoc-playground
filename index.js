@@ -1,4 +1,4 @@
-/* global CustomEvent, ace, Split, Toastify */
+/* global CustomEvent, ace, Split, Toastify, WebAssembly, fetch */
 'use strict'
 
 let editor
@@ -46,6 +46,10 @@ if (window.localStorage.getItem('input.go') == null) {
 package mypackage`)
 }
 
+const go = new Go()
+
+const instantiateWasm = WebAssembly.instantiateStreaming(fetch('main.wasm'), go.importObject)
+
 window.onload = async function () {
   editor = ace.edit('code-editor')
   editor.setTheme('ace/theme/chrome')
@@ -61,5 +65,9 @@ window.onload = async function () {
   editor.on('change', () => {
     clearTimeout(typingTimer)
     typingTimer = setTimeout(window.triggerRender, doneTypingInterval)
+  })
+
+  instantiateWasm.then((result) => {
+    return go.run(result.instance)
   })
 }
