@@ -3,7 +3,7 @@
     <img src="https://github.com/bradleyjkemp/godoc-playground/blob/master/screenshot.png" alt="Screenshot" width="800">
 </p>
 
-The GoDoc Playground lets you make changes to your packages documentation and see in (near) realtime, exactly how this will be rendered on [godoc.org](https://godoc.org).
+The GoDoc Playground lets you make changes to your packages documentation and see, in (near) realtime, exactly how this will be rendered on [godoc.org](https://godoc.org).
 
 ## Features
 * Automagically fixes unresolved symbols so you don't need to paste in all your code, just a small snippet.
