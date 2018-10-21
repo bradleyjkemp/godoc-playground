@@ -1,6 +1,6 @@
-# GoDoc Playground <a href="https://travis-ci.org/bradleyjkemp/godoc-preview"><img src="https://travis-ci.org/bradleyjkemp/godoc-playground.svg?branch=master" alt="Build Status" /></a>
+# GoDoc Playground <a href="https://travis-ci.org/bradleyjkemp/godoc-playground"><img src="https://travis-ci.org/bradleyjkemp/godoc-playground.svg?branch=master" alt="Build Status" /></a>
 <p align="center">
-    <img src="https://github.com/bradleyjkemp/cupaloy/blob/master/screenshot.png" alt="Screenshot" width="800">
+    <img src="https://github.com/bradleyjkemp/godoc-playground/blob/master/screenshot.png" alt="Screenshot" width="800">
 </p>
 
 The GoDoc Playground lets you make changes to your packages documentation and see in (near) realtime, exactly how this will be rendered on [godoc.org](https://godoc.org).
