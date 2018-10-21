@@ -1,4 +1,4 @@
-package main
+package preview
 
 import (
 	"bytes"
@@ -74,6 +74,8 @@ func getUnresolvedReceiverTypes(fileDecls []ast.Decl, unresolved []*ast.Ident) [
 	return unresolvedReceiverTypes
 }
 
+// iterate through the unresolved receiver types and construct a minimal
+// "types.go" file which declares them with a comment saying they're unknown
 func generateFakeTypesFile(unresolved []string, packageName string) string {
 	file := &bytes.Buffer{}
 	file.WriteString(fmt.Sprintf("package %s\n\n", packageName))
@@ -84,7 +86,8 @@ func generateFakeTypesFile(unresolved []string, packageName string) string {
 	return file.String()
 }
 
-func getPageForFile(fileContents string) (string, error) {
+// GetPageForFile returns the html that godoc would render for the given go file
+func GetPageForFile(fileContents string) (string, error) {
 	info := &godoc.PageInfo{Dirname: "/", Mode: godoc.NoFiltering}
 
 	info.FSet = token.NewFileSet()
@@ -134,11 +137,8 @@ func getPageForFile(fileContents string) (string, error) {
 	resp := httptest.NewRecorder()
 	presentation.ServePage(resp, godoc.Page{
 		Title: "Package " + pkg.Name,
-		//Tabtitle: "My tab tile",
-		//Subtitle: "My subtitle",
-		Body: body,
-		//GoogleCN: info.GoogleCN,
+		Body:  body,
 	})
 
-	return strings.Replace(resp.Body.String(), "/lib/godoc", "./ext", -1), nil
+	return resp.Body.String(), nil
 }

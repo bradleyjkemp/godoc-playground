@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#375EAB">
+
+  <title>Package cupaloy - The Go Programming Language</title>
+
+<link type="text/css" rel="stylesheet" href="/lib/godoc/style.css">
+
+
+<script>window.initFuncs = [];</script>
+
+<script src="/lib/godoc/jquery.js" defer></script>
+
+
+
+<script>var goVersion = "go1.11";</script>
+<script src="/lib/godoc/godocs.js" defer></script>
+</head>
+<body>
+
+<div id='lowframe' style="position: fixed; bottom: 0; left: 0; height: 0; width: 100%; border-top: thin solid grey; background-color: white; overflow: auto;">
+...
+</div><!-- #lowframe -->
+
+<div id="topbar" class="wide"><div class="container">
+<div class="top-heading" id="heading-wide"><a href="/">The Go Programming Language</a></div>
+<div class="top-heading" id="heading-narrow"><a href="/">Go</a></div>
+<a href="#" id="menu-button"><span id="menu-button-arrow">&#9661;</span></a>
+<form method="GET" action="/search">
+<div id="menu">
+<a href="/doc/">Documents</a>
+<a href="/pkg/">Packages</a>
+<a href="/project/">The Project</a>
+<a href="/help/">Help</a>
+
+<a href="/blog/">Blog</a>
+
+
+<span class="search-box"><input type="search" id="search" name="q" placeholder="Search" aria-label="Search" required><button type="submit"><span><!-- magnifying glass: --><svg width="24" height="24" viewBox="0 0 24 24"><title>submit search</title><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/><path d="M0 0h24v24H0z" fill="none"/></svg></span></button></span>
+</div>
+</form>
+
+</div></div>
+
+
+
+<div id="page" class="wide">
+<div class="container">
+
+
+  <h1>
+    Package cupaloy
+    <span class="text-muted"></span>
+  </h1>
+
+
+
+
+
+
+
+<div id="nav"></div>
+
+
+<!--
+	Copyright 2009 The Go Authors. All rights reserved.
+	Use of this source code is governed by a BSD-style
+	license that can be found in the LICENSE file.
+-->
+<!--
+	Note: Static (i.e., not template-generated) href and id
+	attributes start with "pkg-" to make it impossible for
+	them to conflict with generated attributes (some of which
+	correspond to Go identifiers).
+-->
+
+	<script>
+	document.ANALYSIS_DATA = ;
+	document.CALLGRAPH = ;
+	</script>
+
+	
+		
+		<div id="short-nav">
+			<dl>
+			<dd><code>import "cupaloy"</code></dd>
+			</dl>
+			<dl>
+			<dd><a href="#pkg-overview" class="overviewLink">Overview</a></dd>
+			<dd><a href="#pkg-index" class="indexLink">Index</a></dd>
+			
+			
+			</dl>
+		</div>
+		<!-- The package's Name is printed as title by the top-level template -->
+		<div id="pkg-overview" class="toggleVisible">
+			<div class="collapsed">
+				<h2 class="toggleButton" title="Click to show Overview section">Overview ▹</h2>
+			</div>
+			<div class="expanded">
+				<h2 class="toggleButton" title="Click to hide Overview section">Overview ▾</h2>
+				
+				
+			</div>
+		</div>
+
+		<div id="pkg-index" class="toggleVisible">
+		<div class="collapsed">
+			<h2 class="toggleButton" title="Click to show Index section">Index ▹</h2>
+		</div>
+		<div class="expanded">
+			<h2 class="toggleButton" title="Click to hide Index section">Index ▾</h2>
+
+		<!-- Table of contents for API; must be named manual-nav to turn off auto nav. -->
+			<div id="manual-nav">
+			<dl>
+			
+			
+			
+				
+				<dd><a href="#Snapshot">func Snapshot(i ...interface{}) error</a></dd>
+			
+				
+				<dd><a href="#SnapshotMulti">func SnapshotMulti(snapshotID string, i ...interface{}) error</a></dd>
+			
+				
+				<dd><a href="#SnapshotT">func SnapshotT(t TestingT, i ...interface{})</a></dd>
+			
+			
+				
+				<dd><a href="#Config">type Config</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#New">func New(configurators ...Configurator) *Config</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Config.Snapshot">func (c *Config) Snapshot(i ...interface{}) error</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Config.SnapshotMulti">func (c *Config) SnapshotMulti(snapshotID string, i ...interface{}) error</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Config.SnapshotT">func (c *Config) SnapshotT(t TestingT, i ...interface{})</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Config.WithOptions">func (c *Config) WithOptions(configurators ...Configurator) *Config</a></dd>
+				
+			
+			
+			</dl>
+			</div><!-- #manual-nav -->
+
+		
+
+		
+			<h3>Package files</h3>
+			<p>
+			<span style="font-size:90%">
+			
+				<a href="/src/input.go">input.go</a>
+			
+				<a href="/src/types.go">types.go</a>
+			
+			</span>
+			</p>
+		
+		</div><!-- .expanded -->
+		</div><!-- #pkg-index -->
+
+		
+		<div id="pkg-callgraph" class="toggle" style="display: none">
+		<div class="collapsed">
+			<h2 class="toggleButton" title="Click to show Internal Call Graph section">Internal call graph ▹</h2>
+		</div> <!-- .expanded -->
+		<div class="expanded">
+			<h2 class="toggleButton" title="Click to hide Internal Call Graph section">Internal call graph ▾</h2>
+			<p>
+			  In the call graph viewer below, each node
+			  is a function belonging to this package
+			  and its children are the functions it
+			  calls&mdash;perhaps dynamically.
+			</p>
+			<p>
+			  The root nodes are the entry points of the
+			  package: functions that may be called from
+			  outside the package.
+			  There may be non-exported or anonymous
+			  functions among them if they are called
+			  dynamically from another package.
+			</p>
+			<p>
+			  Click a node to visit that function's source code.
+			  From there you can visit its callers by
+			  clicking its declaring <code>func</code>
+			  token.
+			</p>
+			<p>
+			  Functions may be omitted if they were
+			  determined to be unreachable in the
+			  particular programs or tests that were
+			  analyzed.
+			</p>
+			<!-- Zero means show all package entry points. -->
+			<ul style="margin-left: 0.5in" id="callgraph-0" class="treeview"></ul>
+		</div>
+		</div> <!-- #pkg-callgraph -->
+		
+
+		
+		
+		
+			
+			
+			<h2 id="Snapshot">func <a href="/src/input.go?s=343:380#L5">Snapshot</a>
+				<a class="permalink" href="#Snapshot">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func Snapshot(i ...interface{}) <a href="/pkg/builtin/#error">error</a></pre>
+			<p>
+Snapshot calls Snapshotter.Snapshot with the global config.
+</p>
+
+			
+			
+
+		
+			
+			
+			<h2 id="SnapshotMulti">func <a href="/src/input.go?s=508:569#L10">SnapshotMulti</a>
+				<a class="permalink" href="#SnapshotMulti">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func SnapshotMulti(snapshotID <a href="/pkg/builtin/#string">string</a>, i ...interface{}) <a href="/pkg/builtin/#error">error</a></pre>
+			<p>
+SnapshotMulti calls Snapshotter.SnapshotMulti with the global config.
+</p>
+
+			
+			
+
+		
+			
+			
+			<h2 id="SnapshotT">func <a href="/src/input.go?s=753:797#L16">SnapshotT</a>
+				<a class="permalink" href="#SnapshotT">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func SnapshotT(t <a href="#TestingT">TestingT</a>, i ...interface{})</pre>
+			<p>
+SnapshotT calls Snapshotter.SnapshotT with the global config.
+</p>
+
+			
+			
+
+		
+		
+			
+			
+			<h2 id="Config">type <a href="/src/types.go?s=453:481#L2">Config</a>
+				<a class="permalink" href="#Config">&#xb6;</a>
+				
+				
+			</h2>
+			<p>
+Undeclared type, presumably this is declared in another file
+</p>
+
+			<pre>type Config = undeclaredType</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+				
+				<h3 id="New">func <a href="/src/input.go?s=170:217#L1">New</a>
+					<a class="permalink" href="#New">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func New(configurators ...<a href="#Configurator">Configurator</a>) *<a href="#Config">Config</a></pre>
+				<p>
+New constructs a new, configured instance of cupaloy using the given Configurators applied to the default config.
+</p>
+
+				
+				
+			
+
+			
+				
+				<h3 id="Config.Snapshot">func (*Config) <a href="/src/input.go?s=1099:1148#L24">Snapshot</a>
+					<a class="permalink" href="#Config.Snapshot">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (c *<a href="#Config">Config</a>) Snapshot(i ...interface{}) <a href="/pkg/builtin/#error">error</a></pre>
+				<p>
+Snapshot compares the given value to the it&#39;s previous value stored on the filesystem.
+An error containing a diff is returned if the snapshots do not match.
+Snapshot determines the snapshot file automatically from the name of the calling function.
+</p>
+
+				
+				
+				
+			
+				
+				<h3 id="Config.SnapshotMulti">func (*Config) <a href="/src/input.go?s=1367:1440#L30">SnapshotMulti</a>
+					<a class="permalink" href="#Config.SnapshotMulti">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (c *<a href="#Config">Config</a>) SnapshotMulti(snapshotID <a href="/pkg/builtin/#string">string</a>, i ...interface{}) <a href="/pkg/builtin/#error">error</a></pre>
+				<p>
+SnapshotMulti is identical to Snapshot but can be called multiple times from the same function.
+This is done by providing a unique snapshotId for each invocation.
+</p>
+
+				
+				
+				
+			
+				
+				<h3 id="Config.SnapshotT">func (*Config) <a href="/src/input.go?s=1696:1752#L37">SnapshotT</a>
+					<a class="permalink" href="#Config.SnapshotT">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (c *<a href="#Config">Config</a>) SnapshotT(t <a href="#TestingT">TestingT</a>, i ...interface{})</pre>
+				<p>
+SnapshotT is identical to Snapshot but gets the snapshot name using
+t.Name() and calls t.Fail() directly if the snapshots do not match.
+</p>
+
+				
+				
+				
+			
+				
+				<h3 id="Config.WithOptions">func (*Config) <a href="/src/input.go?s=2368:2435#L59">WithOptions</a>
+					<a class="permalink" href="#Config.WithOptions">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (c *<a href="#Config">Config</a>) WithOptions(configurators ...<a href="#Configurator">Configurator</a>) *<a href="#Config">Config</a></pre>
+				<p>
+WithOptions returns a copy of an existing Config with additional Configurators applied.
+This can be used to apply a different option for a single call e.g.
+</p>
+<pre>snapshotter.WithOptions(cupaloy.SnapshotSubdirectory(&#34;testdata&#34;)).SnapshotT(t, result)
+</pre>
+<p>
+Or to modify the Global Config e.g.
+</p>
+<pre>cupaloy.Global = cupaloy.Global.WithOptions(cupaloy.SnapshotSubdirectory(&#34;testdata&#34;))
+</pre>
+
+				
+				
+				
+			
+		
+	
+
+	
+
+
+
+
+
+
+
+<div id="footer">
+Build version go1.11.<br>
+Except as <a href="https://developers.google.com/site-policies#restrictions">noted</a>,
+the content of this page is licensed under the
+Creative Commons Attribution 3.0 License,
+and code is licensed under a <a href="/LICENSE">BSD license</a>.<br>
+<a href="/doc/tos.html">Terms of Service</a> |
+<a href="http://www.google.com/intl/en/policies/privacy/">Privacy Policy</a>
+</div>
+
+</div><!-- .container -->
+</div><!-- #page -->
+
+</body>
+</html>
+
+

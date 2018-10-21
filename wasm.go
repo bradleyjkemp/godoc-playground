@@ -3,6 +3,9 @@
 package main
 
 import (
+	"github.com/bradleyjkemp/godoc-playground/preview"
+	"regexp"
+	"strings"
 	"syscall/js"
 )
 
@@ -16,14 +19,26 @@ type ToastifyOptions struct {
 
 var updatePreview = js.NewCallback(func(args []js.Value) {
 	source := args[0].Get("detail").String()
-	page, err := getPageForFile(source)
+	page, err := preview.GetPageForFile(source)
 	if err != nil {
 		js.Global().Call("showErrorToast", err.Error())
 		return
 	}
 
-	js.Global().Call("updatePreview", page)
+	js.Global().Call("updatePreview", sanitize(page))
 })
+
+var nonAnchorHref = regexp.MustCompile(`href="[^#].*?`)
+
+func sanitize(page string) string {
+	// Rewrite static assets to point to local copies
+	page = strings.Replace(page, "/lib/godoc", "./ext", -1)
+
+	// Remove href's which will break the iframe if clicked on
+	// This is any href which isn't an anchor
+	nonAnchorHref.ReplaceAllLiteralString(page, "")
+	return page
+}
 
 func main() {
 	sourcePane = js.Global().Get("document").Call("getElementById", "codeInput")

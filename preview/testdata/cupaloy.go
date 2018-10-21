@@ -1,11 +1,3 @@
-// +build !js,!wasm
-
-package main
-
-import "fmt"
-
-func main() {
-	fmt.Println(getPageForFile(`
 package cupaloy
 
 import (
@@ -110,6 +102,4 @@ func (c *Config) snapshot(snapshotName string, i ...interface{}) error {
 
 	diff := diffSnapshots(prevSnapshot, snapshot)
 	return fmt.Errorf("snapshot not equal:\n%s", diff)
-}
-`))
 }
