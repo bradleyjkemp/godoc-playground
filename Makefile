@@ -2,6 +2,8 @@ main.wasm: *.go
 	 GOOS=js GOARCH=wasm go build -o main.wasm
 
 install:
+	npm install -g standard
+	go get -u golang.org/x/lint/golint
 	go get -t ./...
 
 all: main.wasm
