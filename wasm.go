@@ -28,7 +28,7 @@ var updatePreview = js.NewCallback(func(args []js.Value) {
 	js.Global().Call("updatePreview", sanitize(page))
 })
 
-var nonAnchorHref = regexp.MustCompile(`href="[^#].*?`)
+var nonAnchorHref = regexp.MustCompile(`<a href="[^#].*?"`)
 
 func sanitize(page string) string {
 	// Rewrite static assets to point to local copies
@@ -36,7 +36,7 @@ func sanitize(page string) string {
 
 	// Remove href's which will break the iframe if clicked on
 	// This is any href which isn't an anchor
-	nonAnchorHref.ReplaceAllLiteralString(page, "")
+	page = nonAnchorHref.ReplaceAllString(page, `$0 style="pointer-events:none"`)
 	return page
 }
 
