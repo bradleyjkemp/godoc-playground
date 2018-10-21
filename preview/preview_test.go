@@ -6,10 +6,14 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"regexp"
 	"testing"
 )
 
 var snapshotter = cupaloy.New(cupaloy.SnapshotFileExtension(".html"))
+
+var scriptVersion = regexp.MustCompile(`var goVersion = "go.*?";`)
+var footerVersion = regexp.MustCompile(`Build version go.*?<br>`)
 
 func TestSnapshotTestData(t *testing.T) {
 	files, err := ioutil.ReadDir("testdata")
@@ -25,6 +29,8 @@ func TestSnapshotTestData(t *testing.T) {
 
 			page, err := GetPageForFile(string(fileBytes))
 			require.NoError(t, err)
+			page = scriptVersion.ReplaceAllString(page, `var goVersion = "redacted";`)
+			page = footerVersion.ReplaceAllString(page, `Build version redacted.<br>`)
 			snapshotter.SnapshotT(t, page)
 		})
 	}
