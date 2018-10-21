@@ -19,10 +19,16 @@ window.triggerRender = () => {
 }
 
 window.updatePreview = (htmlContents) => {
-  const iframeDoc = document.getElementById('previewPane').contentWindow.document
+  const iframeWindow = document.getElementById('previewPane').contentWindow
+  const iframeDoc = iframeWindow.document
+  const selectedHash = iframeWindow.location.hash
   iframeDoc.open('text/html', 'replace')
   iframeDoc.write(htmlContents)
   iframeDoc.close()
+
+  if (iframeWindow.location.hash !== selectedHash) {
+    iframeWindow.location.hash = selectedHash
+  }
 }
 
 window.showErrorToast = (errorMessage) => {
