@@ -18,6 +18,13 @@ window.triggerRender = () => {
   document.getElementById('previewPane').dispatchEvent(new CustomEvent('updatePreview', { detail: code }))
 }
 
+window.updatePreview = (htmlContents) => {
+  const iframeDoc = document.getElementById("previewPane").contentWindow.document
+  iframeDoc.open("text/html", "replace")
+  iframeDoc.write(htmlContents)
+  iframeDoc.close()
+}
+
 window.showErrorToast = (errorMessage) => {
   Toastify({
     text: errorMessage,

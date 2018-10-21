@@ -22,7 +22,7 @@ var updatePreview = js.NewCallback(func(args []js.Value) {
 		return
 	}
 
-	previewPane.Call("setAttribute", "srcdoc", page)
+	js.Global().Call("updatePreview", page)
 })
 
 func main() {
