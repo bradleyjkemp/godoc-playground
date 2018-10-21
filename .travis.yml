@@ -1,0 +1,20 @@
+language: go
+
+go:
+- 1.x
+
+matrix:
+  allow_failures:
+  - go: master
+
+install:
+- make install
+
+script:
+- make lint-all
+- make test
+
+notifications:
+  email:
+    on_success: never
+    on_failure: always

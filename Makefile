@@ -1,6 +1,9 @@
 main.wasm: *.go
 	 GOOS=js GOARCH=wasm go build -o main.wasm
 
+install:
+	go get -t ./...
+
 all: main.wasm
 	./update-statics.sh
 
@@ -23,3 +26,6 @@ lint-go: *.go
 	golint ./...
 
 lint-all: lint-go lint-js
+
+test:
+	go test -v ./...

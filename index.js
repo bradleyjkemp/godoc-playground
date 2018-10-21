@@ -19,8 +19,8 @@ window.triggerRender = () => {
 }
 
 window.updatePreview = (htmlContents) => {
-  const iframeDoc = document.getElementById("previewPane").contentWindow.document
-  iframeDoc.open("text/html", "replace")
+  const iframeDoc = document.getElementById('previewPane').contentWindow.document
+  iframeDoc.open('text/html', 'replace')
   iframeDoc.write(htmlContents)
   iframeDoc.close()
 }
@@ -28,10 +28,10 @@ window.updatePreview = (htmlContents) => {
 window.showErrorToast = (errorMessage) => {
   Toastify({
     text: errorMessage,
-    gravity: "bottom",
-    backgroundColor: "orangered",
-    duration: 3000,
-  }).showToast();
+    gravity: 'bottom',
+    backgroundColor: 'orangered',
+    duration: 3000
+  }).showToast()
 }
 
 // if no saved code then initialise with default
