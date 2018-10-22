@@ -79,3 +79,7 @@ header .logo {
 .ghbtns span {
     padding-left: 10px;
 }
+
+.loader {
+    background:#fff url("loader.svg") no-repeat 50% center !important;
+}
