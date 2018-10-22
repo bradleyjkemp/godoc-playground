@@ -42,8 +42,17 @@ window.showErrorToast = (errorMessage) => {
 
 // if no saved code then initialise with default
 if (window.localStorage.getItem('input.go') == null) {
-  window.localStorage.setItem('input.go', `// Paste your go code here
-package mypackage`)
+  window.localStorage.setItem('input.go', `// Write your go code in the editor on the left and watch it previewed here on the right.
+//
+// Features
+//
+// * Supports all the GoDoc syntax
+//
+// * That's because this is using the actual godoc renderer compiled to WebAssembly and running in your browser!
+//
+// * You don't even have to give a full working sample: unresolved symbols are automagically fixed so event just a small snippet will work fine.
+package mypackage
+`)
 }
 
 const go = new Go()
