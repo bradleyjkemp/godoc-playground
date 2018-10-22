@@ -1,4 +1,4 @@
-/* global CustomEvent, ace, Split, Toastify, WebAssembly, fetch */
+/* global CustomEvent, ace, Split, Toastify, Go, WebAssembly, fetch */
 'use strict'
 
 let editor
@@ -48,11 +48,11 @@ package mypackage`)
 
 const go = new Go()
 const mainWasm = fetch('main.wasm')
-const instantiateWasm = WebAssembly.instantiateStreaming ?
-    WebAssembly.instantiateStreaming(mainWasm, go.importObject)
-  : mainWasm.
-  then(response => response.arrayBuffer()).
-  then(bytes => WebAssembly.instantiate(bytes, go.importObject))
+const instantiateWasm = WebAssembly.instantiateStreaming
+  ? WebAssembly.instantiateStreaming(mainWasm, go.importObject)
+  : mainWasm
+    .then(response => response.arrayBuffer())
+    .then(bytes => WebAssembly.instantiate(bytes, go.importObject))
 
 window.onload = async function () {
   editor = ace.edit('code-editor')
