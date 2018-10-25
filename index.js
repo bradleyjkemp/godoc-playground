@@ -50,7 +50,7 @@ if (window.localStorage.getItem('input.go') == null) {
 //
 // * That's because this is using the actual godoc renderer compiled to WebAssembly and running in your browser!
 //
-// * You don't even have to give a full working sample: unresolved symbols are automagically fixed so event just a small snippet will work fine.
+// * You don't even have to give a full working sample: unresolved symbols are automagically fixed so even just a small snippet will work fine.
 package mypackage
 `)
 }
