@@ -1,33 +1,34 @@
-main.wasm: *.go
-	 GOOS=js GOARCH=wasm go build -o main.wasm
+godoc-playground.js: *.go
+	gopherjs build -m .
 
 install:
 	npm install -g standard
 	go get -u golang.org/x/lint/golint
+	go get -u github.com/gopherjs/gopherjs
 	go get -t ./...
 
-all: main.wasm
+all: godoc-playground.js
 	./update-statics.sh
 
-devserver: main.wasm
+devserver: all
 	goexec 'http.ListenAndServe(":8080", http.FileServer(http.Dir(".")))'
 
 clean:
-	rm -rf ext main.wasm
+	rm -rf ext godoc-playground.js*
 
 publish: clean
 	./publish.sh
 
 lint-js: *.js
-	standard *.js
+	standard index.js
 
 lint-fix-js: *.js
-	standard --fix *.js && standard *.js
+	standard --fix index.js && standard index.js
 
 lint-go: *.go
 	golint ./...
 
-lint-all: lint-go lint-js
+lint: lint-go lint-js
 
 test:
 	go test -v ./...

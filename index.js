@@ -1,11 +1,11 @@
-/* global CustomEvent, ace, Split, Toastify, Go, WebAssembly, fetch */
+/* global CustomEvent, ace, Split, Toastify */
 'use strict'
 
 let editor
 
 window.triggerRender = () => {
   if (editor === undefined) {
-    // wasm was loaded and called this method before dom was ready
+    // wasm/gopherjs was loaded and called this method before dom was ready
     // so schedule trigger again after a delay
     clearTimeout(this.timeout)
     this.timeout = setTimeout(window.triggerRender, 100)
@@ -48,22 +48,16 @@ if (window.localStorage.getItem('input.go') == null) {
 //
 // * Supports all the GoDoc syntax
 //
-// * That's because this is using the actual godoc renderer compiled to WebAssembly and running in your browser!
+// * That's because this is using the actual godoc renderer compiled and running in your browser!
 //
 // * You don't even have to give a full working sample: unresolved symbols are automagically fixed so even just a small snippet will work fine.
 package mypackage
 `)
 }
 
-const go = new Go()
-const mainWasm = fetch('main.wasm')
-const instantiateWasm = WebAssembly.instantiateStreaming
-  ? WebAssembly.instantiateStreaming(mainWasm, go.importObject)
-  : mainWasm
-    .then(response => response.arrayBuffer())
-    .then(bytes => WebAssembly.instantiate(bytes, go.importObject))
-
-window.onload = async function () {
+const oldOnload = window.onload
+window.onload = function (e) {
+  oldOnload(e)
   editor = ace.edit('code-editor')
   editor.setTheme('ace/theme/chrome')
   editor.session.setMode('ace/mode/golang')
@@ -78,9 +72,5 @@ window.onload = async function () {
   editor.on('change', () => {
     clearTimeout(typingTimer)
     typingTimer = setTimeout(window.triggerRender, doneTypingInterval)
-  })
-
-  instantiateWasm.then((result) => {
-    return go.run(result.instance)
   })
 }
