@@ -1,4 +1,4 @@
-godoc-playground.js: *.go
+godoc-playground.js: *.go preview/*.go
 	gopherjs build -m .
 
 install:
@@ -11,7 +11,7 @@ all: godoc-playground.js
 	./update-statics.sh
 
 devserver: all
-	goexec 'http.ListenAndServe(":8080", http.FileServer(http.Dir(".")))'
+	goexec 'http.ListenAndServe("localhost:8080", http.FileServer(http.Dir(".")))'
 
 clean:
 	rm -rf ext godoc-playground.js*

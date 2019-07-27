@@ -220,7 +220,7 @@
 				
 				
 			</h2>
-			<pre>func Snapshot(i ...interface{}) <a href="/pkg/builtin/#error">error</a></pre>
+			<pre>func Snapshot(i ...interface{}) error</pre>
 			<p>
 Snapshot calls Snapshotter.Snapshot with the global config.
 </p>
@@ -236,7 +236,7 @@ Snapshot calls Snapshotter.Snapshot with the global config.
 				
 				
 			</h2>
-			<pre>func SnapshotMulti(snapshotID <a href="/pkg/builtin/#string">string</a>, i ...interface{}) <a href="/pkg/builtin/#error">error</a></pre>
+			<pre>func SnapshotMulti(snapshotID <a href="/pkg/builtin/#string">string</a>, i ...interface{}) error</pre>
 			<p>
 SnapshotMulti calls Snapshotter.SnapshotMulti with the global config.
 </p>
@@ -264,7 +264,7 @@ SnapshotT calls Snapshotter.SnapshotT with the global config.
 		
 			
 			
-			<h2 id="Config">type <a href="/src/types.go?s=453:481#L2">Config</a>
+			<h2 id="Config">type <a href="/src/types.go?s=1007:1035#L14">Config</a>
 				<a class="permalink" href="#Config">&#xb6;</a>
 				
 				
@@ -306,7 +306,7 @@ New constructs a new, configured instance of cupaloy using the given Configurato
 					
 					
 				</h3>
-				<pre>func (c *<a href="#Config">Config</a>) Snapshot(i ...interface{}) <a href="/pkg/builtin/#error">error</a></pre>
+				<pre>func (c *<a href="#Config">Config</a>) Snapshot(i ...interface{}) error</pre>
 				<p>
 Snapshot compares the given value to the it&#39;s previous value stored on the filesystem.
 An error containing a diff is returned if the snapshots do not match.
@@ -323,7 +323,7 @@ Snapshot determines the snapshot file automatically from the name of the calling
 					
 					
 				</h3>
-				<pre>func (c *<a href="#Config">Config</a>) SnapshotMulti(snapshotID <a href="/pkg/builtin/#string">string</a>, i ...interface{}) <a href="/pkg/builtin/#error">error</a></pre>
+				<pre>func (c *<a href="#Config">Config</a>) SnapshotMulti(snapshotID <a href="/pkg/builtin/#string">string</a>, i ...interface{}) error</pre>
 				<p>
 SnapshotMulti is identical to Snapshot but can be called multiple times from the same function.
 This is done by providing a unique snapshotId for each invocation.
