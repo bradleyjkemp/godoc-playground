@@ -68,7 +68,7 @@ window.onload = function (e) {
   })
 
   let typingTimer // timer identifier
-  let doneTypingInterval = 1000 // pause length (in ms) after which preview is updated
+  const doneTypingInterval = 1000 // pause length (in ms) after which preview is updated
   editor.on('change', () => {
     clearTimeout(typingTimer)
     typingTimer = setTimeout(window.triggerRender, doneTypingInterval)

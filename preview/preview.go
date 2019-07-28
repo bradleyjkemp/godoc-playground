@@ -49,11 +49,9 @@ func getUnresolvedReceiverAndResultTypes(fileDecls []ast.Decl, unresolved []*ast
 	for _, ident := range unresolved {
 		unresolvedIdents[ident.Name] = true
 	}
-	fmt.Println(unresolvedIdents)
 
 	var unresolvedReceiverTypes []string
 	for _, decl := range fileDecls {
-		fmt.Printf("Processing decl %T\n", decl)
 		funcNode, ok := decl.(*ast.FuncDecl)
 		if !ok {
 			continue
@@ -67,7 +65,6 @@ func getUnresolvedReceiverAndResultTypes(fileDecls []ast.Decl, unresolved []*ast
 			case *ast.Ident:
 				name = recvType.(*ast.Ident).Name
 			}
-			fmt.Println("Processing field name", name)
 
 			if unresolvedIdents[name] {
 				unresolvedReceiverTypes = append(unresolvedReceiverTypes, name)
